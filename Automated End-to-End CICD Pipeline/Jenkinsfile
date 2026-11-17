@@ -1,0 +1,45 @@
+node {
+    stage('GitHub') {
+        git 'https://github.com/suffixscope/maven-web-app.git'
+    }
+
+    stage('Maven Build') {
+        def mvnHome = tool 'maven3'
+        sh "${mvnHome}/bin/mvn clean package"
+    }
+
+    stage('SonarQube Analysis') {
+        def mvnHome = tool 'maven3'
+        withSonarQubeEnv('sonarqube') {
+            sh "${mvnHome}/bin/mvn org.sonarsource.scanner.maven:sonar-maven-plugin:****:sonar"
+        }
+    }
+
+    stage('Nexus Upload') {
+        nexusArtifactUploader artifacts: [[
+            artifactId: '01-maven-web-app',
+            classifier: '',
+            file: 'target/maven-web-app.war',
+            type: 'war'
+        ]],
+        credentialsId: 'nexus-credentials',
+        groupId: 'org.scopeindia',
+        nexusUrl: 'IP ADDRESS:8081',
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        repository: 'maven-releases',
+        version: '3.0-RELEASE'
+    }
+
+    stage('Tomcat Deployment') {
+        withCredentials([usernamePassword(
+            credentialsId: 'tomcat-credentials',
+            usernameVariable: 'TOMCAT_USER',
+            passwordVariable: 'TOMCAT_PASSWORD'
+        )]) {
+            sh '''
+                curl --fail --upload-file target/maven-web-app.war                 -u "$TOMCAT_USER:$TOMCAT_PASSWORD"                 "http://IP ADDRESS/manager/text/deploy?path=/maven-web-app&update=true"
+            '''
+        }
+    }
+}

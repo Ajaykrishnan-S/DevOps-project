@@ -1,0 +1,23 @@
+The project entitled “Automated End-to-End CI/CD Pipeline for Java Web Applications
+on AWS Cloud” focuses on automating the software build, code analysis, artifact
+management, and deployment processes using DevOps tools and cloud infrastructure.
+The proposed system integrates GitHub, Jenkins, Apache Maven, SonarQube, Nexus Repository
+Manager, and Apache Tomcat, with Amazon Web Services (AWS) EC2 providing the
+infrastructure. The application’s source code is maintained in a GitHub repository, from which
+Jenkins retrieves the code and initiates the Continuous Integration and Continuous Deployment
+(CI/CD) pipeline.
+Apache Maven is used to build the application and generate a Web Application Archive (WAR)
+file. SonarQube is integrated to analyse the source code and identify potential quality issues.
+The generated WAR artifact is then uploaded to a hosted Maven repository in Nexus Repository
+Manager for centralized storage and management. Finally, Jenkins communicates with the
+Apache Tomcat server and automatically deploys the application using the Tomcat Manager
+interface.
+The implementation consists of five major pipeline stages: source code checkout, application
+build, code quality analysis, artifact upload, and application deployment. Each stage is
+automated through a Jenkins scripted pipeline, reducing manual intervention and simplifying
+the software delivery process.
+The successful execution of the project demonstrates how multiple DevOps tools can be
+integrated within an AWS cloud environment to establish an automated and structured software
+delivery workflow. This implementation provides practical exposure to CI/CD concepts, cloud
+infrastructure management, Linux administration, build automation, code quality analysis,
+artifact management, and application deployment.
