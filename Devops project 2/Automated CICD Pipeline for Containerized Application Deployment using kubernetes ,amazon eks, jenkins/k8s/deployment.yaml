@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mavenwebappdeployment
+  labels:
+    app: mavenwebapp
+spec:
+  # HPA manages the replica count; do not set replicas here.
+  selector:
+    matchLabels:
+      app: mavenwebapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: mavenwebapp
+    spec:
+      containers:
+        - name: mavenwebapp
+          image: __IMAGE__
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

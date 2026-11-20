@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mavenwebappsvc
+  labels:
+    app: mavenwebapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: mavenwebapp
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
